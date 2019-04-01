@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Star Wars RPG!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body background="assets/images/Background X-wing.jpg">
+    <br>
+    <h1>Star Wars RPG!</h1>
+    <br>
+    <!-- <img src="assets/images/Obi-Wan Kenobi.webp" width="300px" height="200px" alt="Obi-Wan Kenobi Image">
+    <img src="assets/images/Luke Skywalker.jpg" width="300px" height="200px" alt="Luke Skywalker Image">
+    <img src="assets/images/Darth Sidious.png" width="300px" height="200px" alt="Darth Sidious Image">
+    <img src="assets/images/Darth Maul.jpg" width="300px" height="200px" alt="Darth Maul Image"> -->
+
+    <div id="top-row" class="container">
+        <button id="Obi-Wan" class="button choose-character">
+            <h3>Obi-Wan Kenobi</h3>
+            <img src="assets/images/Obi-Wan Kenobi.webp" width="150px" height="100px" alt="Obi-Wan Kenobi Image">
+            <h3><span>Life Remaining: </span></h3>
+            <h3 id="Obi-Wan-Life"><span>120</span></h3>
+        </button>
+        <button id="Luke-Skywalker" class="button choose-character">
+            <h3>Luke Skywalker</h3>
+            <img src="assets/images/Luke Skywalker.jpg" width="150px" height="100px" alt="Luke Skywalker Image">
+            <h3><span>Life Remaining: </span></h3>
+            <h3 id="Luke-Skywalker-Life"><span>100</span></h3>
+        </button>
+        <button id="Darth-Sidious" class="button choose-character">
+            <h3>Darth Sidious</h3>
+            <img src="assets/images/Darth Sidious.png" width="150px" height="100px" alt="Darth Sidious Image">
+            <h3><span>Life Remaining: </span></h3>
+            <h3 id="Darth-Sidious-Life"><span>150</span></h3>
+        </button>
+        <button id="Darth-Maul" class="button choose-character">
+            <h3>Darth Maul</h3>
+            <img src="assets/images/Darth Maul.jpg" width="150px" height="100px" alt="Darth Maul Image">
+            <h3><span>Life Remaining: </span></h3>
+            <h3 id="Darth-Maul-Life"><span>180</span></h3>
+        </button>
+    </div>
+<br>
+<div id="middle-row">
+
+</div>
+
+    <div>
+        <h3>Your Character</h3>
+    </div>
+    <br>
+    <div>
+        <h3>Enemies Available to Attack</h3>
+    </div>
+    <br>
+    <div>
+        <h3>Fight Section</h3>
+    </div>
+    <br>
+    <div>
+        <h3>Defender</h3>
+    </div>
+
+    <script src="assets/javascript/game.js"></script>
+
+</body>
+
+</html>
+<!--
+psuedo <code></code>
+blinking game start
+player chooses character all of which have green border
+Obi-Wan Kenobi - 120
+Luke Skywalker - 100
+Darth Sidious - 150
+Darth Maul - 180
+Remaining three characters move to "Enemies Available to Attack"
+player choose an opponent 
+player can press attack button
+
+
+game is slowly increasing attack power
+
+ -->
