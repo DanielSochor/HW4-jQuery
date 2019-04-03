@@ -18,10 +18,11 @@ var obiWanLifeRemainingLife = 120
 var obiWanLifeReduction = 10
 
 
-$(document).ready(function(){
+$(document).ready(function () {
 
     var playerCharacterChoosen = false;
     var opponentChossen = false;
+    var battleOngoing = false;
 
     $(".character").on("click", function () {
         if (playerCharacterChoosen == false) {
@@ -29,18 +30,25 @@ $(document).ready(function(){
             $(this).addClass("choosen");
             $(".choosen").off();
             playerCharacterChoosen = true;
-        } else {
+        } else if (battleOngoing == false) {
             $(this).appendTo("#bottom-row").addClass("selected-opponent");
-
-            console.log("not true");
-
+            battleOngoing = true;
         }
     });
 
-function lifeReduction() {
-    obiWanLifeRemainingLife = obiWanLifeRemainingLife - obiWanLifeReduction
-    $("#Obi-Wan-Life").text(obiWanLifeRemainingLife);
-    //console.log("reduction");
-}
+    $("#attack").on("click", function () {
+        battle();
+    });
+
+    function battle() {
+        console.log("hello");
+        battleOngoing = false;
+    }
+
+    function lifeReduction() {
+        obiWanLifeRemainingLife = obiWanLifeRemainingLife - obiWanLifeReduction
+        $("#Obi-Wan-Life").text(obiWanLifeRemainingLife);
+        //console.log("reduction");
+    }
 
 });
