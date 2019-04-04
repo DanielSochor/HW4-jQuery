@@ -32,12 +32,13 @@ $(document).ready(function () {
     var isBattleOngoing = false;
     //var choosenCharacter = 0;
     //var choosenOpponent = 0;
-    var choosenCharacterStartingLife = 0;
-    var choosenOpponentStartingLife = 0;
+    var characterStartingLife = 0;
+    var opponentStartingLife = 0;
     var yourDamage = 0;
     var computerDamage = 0;
-    var choosenCharacterRemainingLife = 0;
-    var choosenOpponentRemainingLife = 0;
+    var characterRemainingLife = 0;
+    var opponentRemainingLife = 0;
+    var characterLifeSet = false;
 
     $(".character").on("click", function () {
         if (hasPlayerCharacterChoosen == false) {
@@ -45,50 +46,60 @@ $(document).ready(function () {
             $(this).addClass("choosen");
             $(".choosen").off();
             //choosenCharacter = this.value;
-            choosenCharacterStartingLife = chracterLife[$(this).attr("id")];
+            characterStartingLife = chracterLife[$(this).attr("id")];
             //console.log(choosenCharacterStartingLife);
             hasPlayerCharacterChoosen = true;
         } else if (isBattleOngoing == false) {
             $(this).appendTo("#bottom-row").addClass("selected-opponent");
             choosenOpponent = this.value;
-            choosenOpponentStartingLife = chracterLife[$(this).attr("id")];
+            opponentStartingLife = chracterLife[$(this).attr("id")];
             //console.log(choosenOpponentRemainingLife);
             //console.log(choosenOpponent);
             isBattleOngoing = true;
         }
+        characterLife(characterStartingLife,opponentStartingLife);
     });
 
-    var choosenCharacterRemainingLife = choosenCharacterStartingLife;
-    var choosenOpponentRemainingLife = choosenOpponentStartingLife;
-
     $("#attack").on("click", function () {
-        console.log(choosenCharacterRemainingLife);
-        console.log(choosenOpponentRemainingLife);
-        yourDamage = 0.1 * choosenCharacterStartingLife * counter;
-        computerDamage = 0.1 * choosenOpponentStartingLife;
+        //console.log(choosenCharacterRemainingLife);
+        //console.log(choosenOpponentRemainingLife);
+        yourDamage = 0.1 * characterStartingLife * counter;
+        computerDamage = 0.1 * opponentStartingLife;
         battle();
     });
 
+    function characterLife(characterStartingLife,opponentStartingLife){
+        if (!characterLifeSet) {
+            var characterRemainingLife = characterStartingLife;
+            var opponentRemainingLife = opponentStartingLife;
+            console.log(characterRemainingLife);
+            console.log(opponentRemainingLife);
+            characterLifeSet = true;
+        }
+    }
+
     function battle() {
-        if ((choosenCharacterRemainingLife > 0) && (choosenOpponentRemainingLife > 0)) {
-           choosenCharacterRemainingLife = choosenCharacterRemainingLife - computerDamage;
-           choosenOpponentRemainingLife = choosenOpponentRemainingLife - (counter * yourDamage);
+        var you = $("#top-row").get("id");
+        console.log(you);
+        if ((characterRemainingLife > 0) && (opponentRemainingLife > 0)) {
+           characterRemainingLife = characterRemainingLife - computerDamage;
+           opponentRemainingLife = opponentRemainingLife - (counter * yourDamage);
             console.log("game in play");
             counter ++;
-            console.log(choosenCharacterRemainingLife);
-            console.log(choosenOpponentRemainingLife);
+            console.log(characterRemainingLife);
+            console.log(opponentRemainingLife);
         } else {
             isBattleOngoing = false;
         }
 
-        $("#your_attack").text("You attacked for " + yourDamage + " damage.");
+        $("#your_attack").text("You attacked " +" for " + yourDamage + " damage.");
         $("#computer_attack").text("attacked you for " + computerDamage + " damage");
     }
 
-    function lifeReduction() {
-        obiWanLifeRemainingLife = obiWanLifeRemainingLife - obiWanLifeReduction
-        $("#Obi-Wan-Life").text(obiWanLifeRemainingLife);
-        //console.log("reduction");
-    }
+    // function lifeReduction() {
+    //     obiWanLifeRemainingLife = obiWanLifeRemainingLife - obiWanLifeReduction
+    //     $("#Obi-Wan-Life").text(obiWanLifeRemainingLife);
+    //     //console.log("reduction");
+    // }
 
 });
