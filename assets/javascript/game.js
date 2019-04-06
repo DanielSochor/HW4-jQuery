@@ -14,9 +14,6 @@
 //     var userEntry = event.key;
 
 // }
-var obiWanLifeRemainingLife = 120
-var obiWanLifeReduction = 10
-
 
 $(document).ready(function () {
 
@@ -24,14 +21,12 @@ $(document).ready(function () {
     var Luke_Skywalker = 100;
     var Darth_Sidious = 150;
     var Darth_Maul = 180;
-    var chracterLife = {Obi_Wan,Luke_Skywalker,Darth_Sidious,Darth_Maul};
+    var chracterLife = { Obi_Wan, Luke_Skywalker, Darth_Sidious, Darth_Maul };
     console.log(chracterLife);
     var counter = 1;
 
     var hasPlayerCharacterChoosen = false;
     var isBattleOngoing = false;
-    //var choosenCharacter = 0;
-    //var choosenOpponent = 0;
     var characterStartingLife = 0;
     var opponentStartingLife = 0;
     var yourDamage = 0;
@@ -39,67 +34,85 @@ $(document).ready(function () {
     var characterRemainingLife = 0;
     var opponentRemainingLife = 0;
     var characterLifeSet = false;
+    var gameSetUp = false;
+    var yourDamage = 0;
+    var computerDamage = 0;
 
     $(".character").on("click", function () {
         if (hasPlayerCharacterChoosen == false) {
             $(".character").not(this).appendTo("#middle-row").addClass("choose-opponent");
             $(this).addClass("choosen");
             $(".choosen").off();
-            //choosenCharacter = this.value;
             characterStartingLife = chracterLife[$(this).attr("id")];
-            //console.log(choosenCharacterStartingLife);
             hasPlayerCharacterChoosen = true;
         } else if (isBattleOngoing == false) {
             $(this).appendTo("#bottom-row").addClass("selected-opponent");
             choosenOpponent = this.value;
             opponentStartingLife = chracterLife[$(this).attr("id")];
-            //console.log(choosenOpponentRemainingLife);
-            //console.log(choosenOpponent);
             isBattleOngoing = true;
         }
-        characterLife(characterStartingLife,opponentStartingLife);
+        //setUpGame(characterStartingLife, opponentStartingLife);
+        //characterLife(characterStartingLife, opponentStartingLife); 
     });
 
     $("#attack").on("click", function () {
         //console.log(choosenCharacterRemainingLife);
         //console.log(choosenOpponentRemainingLife);
-        yourDamage = 0.1 * characterStartingLife * counter;
-        computerDamage = 0.1 * opponentStartingLife;
+        setUpGame();
+        //battle(yourDamage,computerDamage);
         battle();
     });
 
-    function characterLife(characterStartingLife,opponentStartingLife){
-        if (!characterLifeSet) {
-            var characterRemainingLife = characterStartingLife;
-            var opponentRemainingLife = opponentStartingLife;
-            console.log(characterRemainingLife);
-            console.log(opponentRemainingLife);
-            characterLifeSet = true;
+    function setUpGame() {
+        if (gameSetUp == false) {
+            console.log("game set up");
+            characterRemainingLife = characterStartingLife;
+            opponentRemainingLife = opponentStartingLife;
+            yourDamage = 0.1 * characterStartingLife * counter;
+            computerDamage = 0.1 * opponentStartingLife;
+            gameSetUp = true;
+        } else {
+            console.log("game already set up");
         }
     }
 
     function battle() {
-        var you = $("#top-row").get("id");
+        var you = $("#top-row > .button").prop("id");
         console.log(you);
+        var opponent = $("#bottom-row > .button").prop("id");
+        console.log(opponent);
+        console.log(characterStartingLife);
+        console.log(opponentStartingLife);
+        console.log("characterRemainingLife: " + characterRemainingLife);
+        console.log("characterRemainingLife: " + opponentRemainingLife);
         if ((characterRemainingLife > 0) && (opponentRemainingLife > 0)) {
-           characterRemainingLife = characterRemainingLife - computerDamage;
-           opponentRemainingLife = opponentRemainingLife - (counter * yourDamage);
+            characterRemainingLife = characterRemainingLife - computerDamage;
+            opponentRemainingLife = opponentRemainingLife - (counter * yourDamage);
             console.log("game in play");
-            counter ++;
+            counter++;
             console.log(characterRemainingLife);
             console.log(opponentRemainingLife);
-        } else {
-            isBattleOngoing = false;
+            $("#top-row").find(".life").text(characterRemainingLife);
+            $("#bottom-row").find(".life").text(opponentRemainingLife);
+            if ((characterRemainingLife <= 0) && (opponentRemainingLife >= 0)) {
+                $("#top-row").find(".life").text("0");
+                isBattleOngoing = false;
+                console.log("opponent has won");
+            } else if ((characterRemainingLife >= 0) && (opponentRemainingLife <= 0)) {
+                $("#bottom-row").find(".life").text("0");
+                isBattleOngoing = false;
+                console.log("character has won");
+                $("#bottom-row").remove(".button");
+            }
         }
-
-        $("#your_attack").text("You attacked " +" for " + yourDamage + " damage.");
-        $("#computer_attack").text("attacked you for " + computerDamage + " damage");
+        $("#your_attack").text("You attacked " + opponent + " for " + yourDamage + " damage.");
+        $("#computer_attack").text(opponent + " attacked you for " + computerDamage + " damage");
+        //if opponent life falls below zero make them disappear
     }
 
-    // function lifeReduction() {
-    //     obiWanLifeRemainingLife = obiWanLifeRemainingLife - obiWanLifeReduction
-    //     $("#Obi-Wan-Life").text(obiWanLifeRemainingLife);
-    //     //console.log("reduction");
-    // }
+    function resetGame() {
 
+    }
 });
+
+
