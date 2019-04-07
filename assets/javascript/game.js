@@ -62,13 +62,19 @@ $(document).ready(function () {
                 $("#bottom-row").find(".button").remove();
             }
         } else {
-            restartGame()
+            console.log("You died");
+            var restartGameButton = $('<input/>').attr({
+                type: "button",
+                id: "restartGame",
+                value: "Play Again",
+            });
+            $("#restart").append(restartGameButton);
         }
     }
 
     function attack() {
         if (opponentChosen_BattleIsPossible = true) {
-            var yourDamage = Math.min(50,(0.1 * (yourFullLife * counter)));
+            var yourDamage = Math.min(50, (0.1 * (yourFullLife * counter)));
             var computerDamage = 0.1 * opponentFullLife;
             yourLife = Math.max(0, yourLife - computerDamage);
             opponentLife = Math.max(0, opponentLife - yourDamage);
@@ -80,6 +86,7 @@ $(document).ready(function () {
     }
 
     function restartGame() {
+        console.log("restart game");
         hasPlayerCharacterChoosen = false;
         opponentChosen_BattleIsPossible = false;
     }
