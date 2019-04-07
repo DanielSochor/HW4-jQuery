@@ -1,118 +1,88 @@
-
-// Thank you for preordering Wheel of Fortune** !!!!!
-// ** Denotes beta
-
-// Here are the Special Features!:
-// -Handles phrases not just single words
-// -Game understands if letter has already been selected
-// -Only accepts alphanumeric characters
-// -Handles upper and lower case condition of each letter
-// -Each task is broken down into separate functions with very clear names
-// -We're tried to make the job of the TA easier
-
-// document.onkeydown = function (event) {
-//     var userEntry = event.key;
-
-// }
-
 $(document).ready(function () {
 
     var Obi_Wan = 120;
     var Luke_Skywalker = 100;
     var Darth_Sidious = 150;
     var Darth_Maul = 180;
-    var chracterLife = { Obi_Wan, Luke_Skywalker, Darth_Sidious, Darth_Maul };
-    console.log(chracterLife);
-    var counter = 1;
-
-    var hasPlayerCharacterChoosen = false;
-    var isBattleOngoing = false;
-    var characterStartingLife = 0;
-    var opponentStartingLife = 0;
-    var yourDamage = 0;
-    var computerDamage = 0;
-    var characterRemainingLife = 0;
-    var opponentRemainingLife = 0;
-    var characterLifeSet = false;
-    var gameSetUp = false;
-    var yourDamage = 0;
-    var computerDamage = 0;
+    var characterLife = { Obi_Wan, Luke_Skywalker, Darth_Sidious, Darth_Maul };
+    console.log(characterLife);
 
     $(".character").on("click", function () {
-        if (hasPlayerCharacterChoosen == false) {
+        if (hasPlayerCharacterChosen == false) {
             $(".character").not(this).appendTo("#middle-row").addClass("choose-opponent");
             $(this).addClass("choosen");
             $(".choosen").off();
-            characterStartingLife = chracterLife[$(this).attr("id")];
-            hasPlayerCharacterChoosen = true;
-        } else if (isBattleOngoing == false) {
+            yourFullLife = characterLife[$(this).attr("id")];
+            hasPlayerCharacterChosen = true;
+        } else if (opponentChosen_BattleIsPossible == false) {
             $(this).appendTo("#bottom-row").addClass("selected-opponent");
-            choosenOpponent = this.value;
-            opponentStartingLife = chracterLife[$(this).attr("id")];
-            isBattleOngoing = true;
+            opponentFullLife = characterLife[$(this).attr("id")];
+            opponentLife = opponentFullLife;
+            opponentChosen_BattleIsPossible = true;
         }
-        //setUpGame(characterStartingLife, opponentStartingLife);
-        //characterLife(characterStartingLife, opponentStartingLife); 
+        //console.log(characterLife[$("#top-row > #button").attr("id")]);
     });
 
     $("#attack").on("click", function () {
-        //console.log(choosenCharacterRemainingLife);
-        //console.log(choosenOpponentRemainingLife);
-        setUpGame();
-        //battle(yourDamage,computerDamage);
-        battle();
+        if (opponentChosen_BattleIsPossible) {
+            initializeGame();
+            battle();
+        }
     });
 
-    function setUpGame() {
-        if (gameSetUp == false) {
-            console.log("game set up");
-            characterRemainingLife = characterStartingLife;
-            opponentRemainingLife = opponentStartingLife;
-            yourDamage = 0.1 * characterStartingLife * counter;
-            computerDamage = 0.1 * opponentStartingLife;
-            gameSetUp = true;
-        } else {
-            console.log("game already set up");
+    $("#restart").on("click", function () {
+        restartGame();
+    });
+
+    var hasPlayerCharacterChosen = false;
+    var opponentChosen_BattleIsPossible = false;
+    var battleOnGoing = false;
+    var counter = 1;
+    var yourFullLife = 0;
+    var opponentFullLife = 0;
+    var yourLife = 0;
+    var opponentLife = 0;
+
+    function initializeGame() {
+        if (!battleOnGoing) {
+            yourLife = yourFullLife;
+            battleOnGoing = true;
         }
     }
 
     function battle() {
-        var you = $("#top-row > .button").prop("id");
-        console.log(you);
-        var opponent = $("#bottom-row > .button").prop("id");
-        console.log(opponent);
-        console.log(characterStartingLife);
-        console.log(opponentStartingLife);
-        console.log("characterRemainingLife: " + characterRemainingLife);
-        console.log("characterRemainingLife: " + opponentRemainingLife);
-        if ((characterRemainingLife > 0) && (opponentRemainingLife > 0)) {
-            characterRemainingLife = characterRemainingLife - computerDamage;
-            opponentRemainingLife = opponentRemainingLife - (counter * yourDamage);
-            console.log("game in play");
-            counter++;
-            console.log(characterRemainingLife);
-            console.log(opponentRemainingLife);
-            $("#top-row").find(".life").text(characterRemainingLife);
-            $("#bottom-row").find(".life").text(opponentRemainingLife);
-            if ((characterRemainingLife <= 0) && (opponentRemainingLife >= 0)) {
-                $("#top-row").find(".life").text("0");
-                isBattleOngoing = false;
-                console.log("opponent has won");
-            } else if ((characterRemainingLife >= 0) && (opponentRemainingLife <= 0)) {
-                $("#bottom-row").find(".life").text("0");
-                isBattleOngoing = false;
-                console.log("character has won");
-                $("#bottom-row").remove(".button");
+        if (yourLife > 0) {
+            if (opponentLife > 0) {
+                attack()
+                counter++;
+            } else {
+                opponentChosen_BattleIsPossible = false;
+                $("#your_attack").text("You have defeated " + $("#bottom-row > button").attr("id") + ", you can choose to fight another enemy.");
+                $("#computer_attack").text("");
+                $("#bottom-row").find(".button").remove();
             }
+        } else {
+            restartGame()
         }
-        $("#your_attack").text("You attacked " + opponent + " for " + yourDamage + " damage.");
-        $("#computer_attack").text(opponent + " attacked you for " + computerDamage + " damage");
-        //if opponent life falls below zero make them disappear
     }
 
-    function resetGame() {
-
+    function attack() {
+        if (opponentChosen_BattleIsPossible = true) {
+            var yourDamage = Math.min(50,(0.1 * (yourFullLife * counter)));
+            var computerDamage = 0.1 * opponentFullLife;
+            yourLife = Math.max(0, yourLife - computerDamage);
+            opponentLife = Math.max(0, opponentLife - yourDamage);
+            $("#top-row").find(".life").text(yourLife);
+            $("#bottom-row").find(".life").text(opponentLife);
+            $("#your_attack").text("You attacked " + $("#bottom-row > button").attr("id") + " for " + yourDamage + " damage.");
+            $("#computer_attack").text($("#bottom-row > button").attr("id") + " attacked you for " + computerDamage + " damage");
+        }
     }
+
+    function restartGame() {
+        hasPlayerCharacterChoosen = false;
+        opponentChosen_BattleIsPossible = false;
+    }
+
+    // bottom row is empty you won
 });
-
-
