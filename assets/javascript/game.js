@@ -7,15 +7,18 @@ $(document).ready(function () {
     var characterLife = { Obi_Wan, Luke_Skywalker, Darth_Sidious, Darth_Maul };
     console.log(characterLife);
 
-    $(".character").on("click", function () {
+    $(".button").on("click", function () {
+        console.log("has player chosen: " + hasPlayerCharacterChosen);
         if (hasPlayerCharacterChosen == false) {
-            $(".character").not(this).appendTo("#middle-row").addClass("choose-opponent");
-            $(this).addClass("choosen");
-            $(".choosen").off();
+            $(".button").not(this).appendTo("#middle-row").addClass("choose-opponent");
+            $(this).addClass("chosen-character");
+            $(".chosen-character").off();
             yourFullLife = characterLife[$(this).attr("id")];
             hasPlayerCharacterChosen = true;
+            console.log("test");
         } else if (opponentChosen_BattleIsPossible == false) {
-            $(this).appendTo("#bottom-row").addClass("selected-opponent");
+            console.log("2nd click");
+            $(this).appendTo("#bottom-row").addClass("selected-opponent").removeClass("choose-opponent");
             opponentFullLife = characterLife[$(this).attr("id")];
             opponentLife = opponentFullLife;
             opponentChosen_BattleIsPossible = true;
@@ -56,6 +59,7 @@ $(document).ready(function () {
                 attack()
                 counter++;
             } else if ($("#middle-row").is(':empty')) {
+                opponentChosen_BattleIsPossible = false;
                 removeOpponent();
                 youWin();
                 showRestartButton();
@@ -65,6 +69,7 @@ $(document).ready(function () {
                 $("#computer_attack").text("");
             }
         } else {
+            battleOnGoing = false;
             opponentChosen_BattleIsPossible = false;
             console.log("You died");
             showRestartButton();
@@ -85,11 +90,12 @@ $(document).ready(function () {
     }
 
     function restartGame() {
+        counter = 1;
         console.log("restart game");
-        hasPlayerCharacterChoosen = false;
         $("#beaten_enemies").find(".button").appendTo("#top-row").show().removeClass("selected-opponent").removeClass("choose-opponent");
         $("#middle-row").find(".button").appendTo("#top-row").show().removeClass("selected-opponent").removeClass("choose-opponent");
         $("#bottom-row").find(".button").appendTo("#top-row").show().removeClass("selected-opponent").removeClass("choose-opponent");
+        $("#top-row > button").removeClass("chosen-character");
         $("#your_attack").text("");
         $("#computer_attack").text("");
         $("#top-row > button").each(function(){
@@ -100,6 +106,8 @@ $(document).ready(function () {
             console.log(newLife);
             $(this).find(".life").text(newLife);
         });
+        hideRestartButton();
+        hasPlayerCharacterChosen = false;
     }
 
     function youWin() {
@@ -107,18 +115,29 @@ $(document).ready(function () {
     }
 
     function removeOpponent(){
+        battleOnGoing = false;
         opponentChosen_BattleIsPossible = false;
         $("#bottom-row").find(".button").appendTo("#beaten_enemies").hide();
     }
 
     function showRestartButton() {
-        var restartGameButton = $('<input/>').attr({
-            type: "button",
-            id: "restartGame",
-            value: "Play Again",
-        });
-        $("#restart").append(restartGameButton);
+        var hasRestartButtonBeenCreated = false;
+        if (!hasRestartButtonBeenCreated) {
+            console.log("first restart");
+            var restartGameButton = $('<input/>').attr({
+                type: "button",
+                id: "restartGame",
+                value: "Play Again",
+            });
+            $("#restart").append(restartGameButton);
+            hasRestartButtonBeenCreated = true;
+        } else {
+            console.log("second restart or greater");
+            $("#restart").show();
+        }
     }
 
-    // bottom row is empty you won
+    function hideRestartButton() {
+        $("#restart").hide();
+    }
 });
