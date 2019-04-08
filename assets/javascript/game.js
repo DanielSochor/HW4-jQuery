@@ -55,20 +55,19 @@ $(document).ready(function () {
             if (opponentLife > 0) {
                 attack()
                 counter++;
+            } else if ($("#middle-row").is(':empty')) {
+                removeOpponent();
+                youWin();
+                showRestartButton();
             } else {
-                opponentChosen_BattleIsPossible = false;
-                $("#your_attack").text("You have defeated " + $("#bottom-row > button").attr("id") + ", you can choose to fight another enemy.");
+                removeOpponent();
+                $("#your_attack").text("You have defeated " + $("#beaten_enemies > button").attr("id") + ", you can choose to fight another enemy.");
                 $("#computer_attack").text("");
-                $("#bottom-row").find(".button").remove();
             }
         } else {
+            opponentChosen_BattleIsPossible = false;
             console.log("You died");
-            var restartGameButton = $('<input/>').attr({
-                type: "button",
-                id: "restartGame",
-                value: "Play Again",
-            });
-            $("#restart").append(restartGameButton);
+            showRestartButton();
         }
     }
 
@@ -76,8 +75,8 @@ $(document).ready(function () {
         if (opponentChosen_BattleIsPossible = true) {
             var yourDamage = Math.min(50, (0.1 * (yourFullLife * counter)));
             var computerDamage = 0.1 * opponentFullLife;
-            yourLife = Math.max(0, yourLife - computerDamage);
-            opponentLife = Math.max(0, opponentLife - yourDamage);
+            yourLife = Math.max(0, (yourLife - computerDamage));
+            opponentLife = Math.max(0, (opponentLife - yourDamage));
             $("#top-row").find(".life").text(yourLife);
             $("#bottom-row").find(".life").text(opponentLife);
             $("#your_attack").text("You attacked " + $("#bottom-row > button").attr("id") + " for " + yourDamage + " damage.");
@@ -88,7 +87,37 @@ $(document).ready(function () {
     function restartGame() {
         console.log("restart game");
         hasPlayerCharacterChoosen = false;
+        $("#beaten_enemies").find(".button").appendTo("#top-row").show().removeClass("selected-opponent").removeClass("choose-opponent");
+        $("#middle-row").find(".button").appendTo("#top-row").show().removeClass("selected-opponent").removeClass("choose-opponent");
+        $("#bottom-row").find(".button").appendTo("#top-row").show().removeClass("selected-opponent").removeClass("choose-opponent");
+        $("#your_attack").text("");
+        $("#computer_attack").text("");
+        $("#top-row > button").each(function(){
+            var localCharacter = $(this).attr("id");
+            console.log(localCharacter);
+            console.log($(this).find(".life").text());
+            var newLife = characterLife[localCharacter];
+            console.log(newLife);
+            $(this).find(".life").text(newLife);
+        });
+    }
+
+    function youWin() {
+        console.log("You win!");
+    }
+
+    function removeOpponent(){
         opponentChosen_BattleIsPossible = false;
+        $("#bottom-row").find(".button").appendTo("#beaten_enemies").hide();
+    }
+
+    function showRestartButton() {
+        var restartGameButton = $('<input/>').attr({
+            type: "button",
+            id: "restartGame",
+            value: "Play Again",
+        });
+        $("#restart").append(restartGameButton);
     }
 
     // bottom row is empty you won
