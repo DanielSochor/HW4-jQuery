@@ -11,8 +11,8 @@ $(document).ready(function () {
         console.log("has player chosen: " + hasPlayerCharacterChosen);
         if (hasPlayerCharacterChosen == false) {
             $(".button").not(this).appendTo("#middle-row").addClass("choose-opponent");
-            $(this).addClass("chosen-character");
-            $(".chosen-character").off();
+            //$(this).addClass("chosen-character");
+            //$(".chosen-character").off();
             yourFullLife = characterLife[$(this).attr("id")];
             hasPlayerCharacterChosen = true;
             console.log("test");
@@ -23,7 +23,6 @@ $(document).ready(function () {
             opponentLife = opponentFullLife;
             opponentChosen_BattleIsPossible = true;
         }
-        //console.log(characterLife[$("#top-row > #button").attr("id")]);
     });
 
     $("#attack").on("click", function () {
@@ -78,6 +77,7 @@ $(document).ready(function () {
 
     function attack() {
         if (opponentChosen_BattleIsPossible = true) {
+            battleOnGoing = true;
             var yourDamage = Math.min(50, (0.1 * (yourFullLife * counter)));
             var computerDamage = 0.1 * opponentFullLife;
             yourLife = Math.max(0, (yourLife - computerDamage));
@@ -100,10 +100,7 @@ $(document).ready(function () {
         $("#computer_attack").text("");
         $("#top-row > button").each(function(){
             var localCharacter = $(this).attr("id");
-            console.log(localCharacter);
-            console.log($(this).find(".life").text());
             var newLife = characterLife[localCharacter];
-            console.log(newLife);
             $(this).find(".life").text(newLife);
         });
         hideRestartButton();
@@ -140,4 +137,6 @@ $(document).ready(function () {
     function hideRestartButton() {
         $("#restart").hide();
     }
+
+    //life managament function can simplify this code
 });
