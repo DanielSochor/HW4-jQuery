@@ -1,5 +1,5 @@
 body {
-    font-family: monospace;
+    font-family: 'Courier New', Courier, monospace;
     background-size: 1080px;
 }
 
@@ -11,14 +11,14 @@ h3 {
     text-align: center;
 }
 
-.button {
+.character {
     width: 200px;
     height: 150px;
     border: 3px;
     border-style: solid;
 }
 
-.button{
+.character{
     background-color:white;
     border-color: green;
 }
@@ -32,4 +32,16 @@ h3 {
     background-color:black;
     border-color: green;
     color: white;
+}
+
+#attack {
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+#restartGame {
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
 }
