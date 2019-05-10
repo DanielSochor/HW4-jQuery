@@ -1,5 +1,4 @@
-# HW4-jQuery
-Star Wars RPG using jQuery
+# Star Wars RPG using jQuery
 
 The project is a simple role playing game in the theme of Star Wars. It makes heavy use of jQuery.  When the game starts, the player will chooses a character by clicking on the fighter's picture. The player will fight as that character for the rest of the game.
 
